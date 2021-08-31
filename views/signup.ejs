@@ -1,0 +1,99 @@
+
+ <%- include('header') -%>
+
+  
+ <form action="/signup" method="post" class="row g-3" autocomplete="on" >
+	<div class="col-md-6">
+	  <label for="inputState" class="form-label">Name</label>
+	 
+	  <input name="name" type="text" class="form-control" id="inputState" required>
+	</div>
+	<div class="col-md-6">
+	  <label for="inputEmail4" class="form-label">Email</label>
+	  <input  minlength="5" maxlength="100" name="email" type="email" class="form-control" id="inputEmail" required/>
+	</div>
+	<div class="col-md-6">
+		<label for="inputPassword4" class="form-label">Password</label>
+		<input  name="password" type="password" class="form-control" id="password" required>
+	  </div>
+	<div class="col-md-4">
+		<label for="inputPassword4" class="form-label">Confirm Password</label>
+		<input  name="confirmPassword" type="password" class="form-control" id="confirmPassword" required>
+		<option>...</option>
+	  </select>
+	</div>
+	
+	<div class="col-12">
+	  <button onclick="myFunction()"  type="submit" class="btn btn-primary">Sign up</button>
+	</div>
+  </form>
+
+ <script>
+
+function myFunction() {
+  let password = $('#password').val();
+  let confirmPassword = $('#confirmPassword').val();
+  let email = $('#email').val();
+  let name = $('#name').val()
+  console.log(password, confirmPassword)
+
+$.post('/signup', { email: email, confirmPassword: confirmPassword, password: password, Name: name}, (res)=>{
+	 if(!password || !confirmPassword || !email || !name){
+
+		
+		alert("invalid details")
+window.location.href ='/signup';
+     }
+
+		if(res.code === 0){
+			alert("invalid details")
+window.location.href ='/signup';
+		}
+ 
+	else{
+
+		alert("welcome")
+	window.location.href = '/home'
+ 
+}
+	
+	
+  })
+	  
+   }
+
+	
+
+
+// var transporter = nodemailer.createTransport({
+//       service: 'gmail',
+//       auth: {
+//         user: 'dedipyaman1131@gmail.com',
+//         pass: '8230892637'
+//       }
+//     });
+   
+//     var mailOptions = {
+//       from: 'dedipyaman1131@gmail.com',
+//       to: recvr,
+//       subject: 'Sending Email using Node.js',
+//       text: 'hello dada... mail ki gelo???'
+//     };
+    
+//     transporter.sendMail(mailOptions, function(error, info){
+//       if (error) {
+//         console.log(error);
+//       } else {
+//         console.log('Email sent: ' + info.response);
+//       }
+//     });
+
+
+
+
+</script> -->
+
+
+
+<%- include('footer') -%>
+
