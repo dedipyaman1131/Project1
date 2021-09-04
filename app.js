@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {check , validtionResult} = require('express-validator')
 const jwt = require('jsonwebtoken')
 const app = express();
 const mongoose =  require('mongoose');
@@ -10,7 +9,7 @@ mongoose.connect("mongodb://localhost:27017/eCommerceDB",{
     useUnifiedTopology:true,
     useCreateIndex:true,
 }).then(()=>{
-    console.log(`connection succesfull`)
+    console.log(`Connected to DB successfully`)
 }).catch(()=>{
     console.log('did not connect')
 });
@@ -22,19 +21,21 @@ app.use(express.static('public'));
 // app.use(express.json())
 const eCommerceSchema = new mongoose.Schema({
   
-  Email: {
+  email: {
     type: String,
-    required:true
+    required:true,
+    unique : true
     
 
   },
- Name: {
+ name: {
     type: String,
-    required:true
+    required:true,
+    unique:true
    
   
   } ,
-  Password: {
+  password: {
     type: String,
     required:true
     
@@ -42,10 +43,7 @@ const eCommerceSchema = new mongoose.Schema({
     
   
   },
-   ConfirmPassword: {
-    type: String,
-    required:true
-   }
+ 
     
   
 });
@@ -70,75 +68,35 @@ app.get("/home",(req,res)=>{
   app.post("/signup", async(req,res)=>{
     try{
 
+
+      
      const  password =  req.body.password
-     const confirmPassword = req.body.confirmPassword
      const email =  req.body.email;
+     const name = req.body.name;
+     
      console.log(email)
 
-      check('name')
 
-    //  if(!password || !confirmPassword || !email || !name){
-    //    res.send({code:0})
-    //  }else
-    
-     if(password === confirmPassword){
 
      const registerPeople = new registered ({ 
-      Email: req.body.email,
-      Name : req.body.address,
-      Password : req.body.password,
-      ConfirmPassword: req.body.confirmPassword,
-    
-
+      email: email,
+      name : name,
+      password : password
     });
  
-  
-
-// const recvr = req.body.email			
-// var transporter = nodemailer.createTransport({
-// service: 'gmail',
-// auth: {
-//   user: 'dedipyaman18@gmail.com',
-//   pass: '1108393857'
-// }
-// });
-
-// var mailOptions = {
-// from: 'dedipyaman18@gmail.com',
-// to: recvr,
-// subject: 'Sending Email using Node.js',
-// text: 'hello dada... mail ki gelo???'
-// };
-
-// transporter.sendMail(mailOptions, function(error, info){
-// if (error) {
-//   console.log(error);
-// } else {
-//   console.log('Email sent: ' + info.response);
-// }
-// });
  registerPeople.save();
-    // res.redirect("/home")
-
-    
+ 
     res.send({ msg: "ok" , code:1})
     
-  }
-
-  
-  else{
-  
-  //  res.redirect("/signup")
-  res.send({ msg: "not ok" , code:0})
-   
-  } 
 }
 
 
 
 catch(err){
     
-    console.log("error occured")
+    console.log("error occured", err)
+    res.send({ msg: "not ok" , code:0})
+
   }
 
   })
@@ -171,22 +129,6 @@ catch(err){
 
      }
 
-       
-   
-    
-   
-     
-    
-      
-      // if( userPassword.Email === email){
-      
-      //   res.status(201).render("home",{newPage: "to the home page"});
-       
-      // } else{
-       
-      //     res.send("invalid details")
-       
-      // }
     }catch(err){
       console.log("Error occurred", err);
     }
@@ -214,6 +156,6 @@ catch(err){
   //   createToken()
 
 
-app.listen(process.env.PORT || 3000,()=>{
-    console.log("server is running")
+app.listen(3000,()=>{
+    console.log("server is running on port 3000")
 })

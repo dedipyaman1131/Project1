@@ -1,68 +1,82 @@
+<%- include('header') -%>
 
- <%- include('header') -%>
 
-  
- <form action="/signup" method="post" class="row g-3" autocomplete="on" >
-	<div class="col-md-6">
-	  <label for="inputState" class="form-label">Name</label>
-	 
-	  <input name="name" type="text" class="form-control" id="inputState" required>
-	</div>
-	<div class="col-md-6">
-	  <label for="inputEmail4" class="form-label">Email</label>
-	  <input  minlength="5" maxlength="100" name="email" type="email" class="form-control" id="inputEmail" required/>
-	</div>
-	<div class="col-md-6">
-		<label for="inputPassword4" class="form-label">Password</label>
-		<input  name="password" type="password" class="form-control" id="password" required>
-	  </div>
-	<div class="col-md-4">
-		<label for="inputPassword4" class="form-label">Confirm Password</label>
-		<input  name="confirmPassword" type="password" class="form-control" id="confirmPassword" required>
-		<option>...</option>
-	  </select>
-	</div>
-	
-	<div class="col-12">
-	  <button onclick="myFunction()"  type="submit" class="btn btn-primary">Sign up</button>
-	</div>
-  </form>
+	<form class="row g-3" autocomplete="on">
+		<div class="col-md-6">
+			<label for="inputState" class="form-label">Name</label>
 
- <script>
+			<input name="name" type="text" class="form-control" id="name" required />
+		</div>
+		<div class="col-md-6">
+			<label for="inputEmail4" class="form-label">Email</label>
+			<input name="email" type="email" class="form-control" id="email"
+				required />
+		</div>
+		<div class="col-md-6">
+			<label for="inputPassword4" class="form-label">Password</label>
+			<input name="password" type="password" class="form-control" id="password" required>
+		</div>
+		<div class="col-md-4">
+			<label for="inputPassword4" class="form-label">Confirm Password</label>
+			<input name="confirmPassword" type="password" class="form-control" id="confirmPassword" required>
+			<option>...</option>
+			</select>
+		</div>
 
-function myFunction() {
-  let password = $('#password').val();
-  let confirmPassword = $('#confirmPassword').val();
-  let email = $('#email').val();
-  let name = $('#name').val()
-  console.log(password, confirmPassword)
+		<div class="col-12">
+			<button onclick="myFunction()" class="btn btn-primary">Sign up</button>
+		</div>
+	</form>
 
-$.post('/signup', { email: email, confirmPassword: confirmPassword, password: password, Name: name}, (res)=>{
-	 if(!password || !confirmPassword || !email || !name){
+	<script>
 
-		
-		alert("invalid details")
-window.location.href ='/signup';
-     }
+		function myFunction() {
 
-		if(res.code === 0){
-			alert("invalid details")
-window.location.href ='/signup';
+			//1.  get the email , password , name and confirmpassword from the user --> done
+
+			let password = $('#password').val();
+			let confirmPassword = $('#confirmPassword').val();
+			let email = $('#email').val();
+			let name = $('#name').val()
+
+			console.log(password, confirmPassword, name, email)
+
+			//2. Check if the values are present or not  done
+
+			if (email === undefined || name === undefined || password === undefined || confirmPassword === undefined) {
+
+				//3. if not send alert
+
+				cosnole.log('Please fill all details');
+			} else {
+				//4. if yes then check if password and confirm password matches or not
+				if (password !== confirmPassword) {
+					//5. if not show error alrt
+					alert("password and confirm password are not matching")
+
+					window.location.href = '/signup';
+				} else {
+
+					console.log('All is correct');
+					//6. if yes then send ajax request to the backend
+					$.post('/signup', { email: email, password: password, name: name }, (res) => {
+
+						if (res.code === 0) {
+							alert("invalid details")
+							window.location.href = '/signup';
+						}
+						else {
+							alert("welcome")
+							window.location.href = '/home'
+						}
+					})
+
+				}
+			}
+
 		}
- 
-	else{
 
-		alert("welcome")
-	window.location.href = '/home'
- 
-}
-	
-	
-  })
-	  
-   }
 
-	
 
 
 // var transporter = nodemailer.createTransport({
@@ -72,14 +86,14 @@ window.location.href ='/signup';
 //         pass: '8230892637'
 //       }
 //     });
-   
+
 //     var mailOptions = {
 //       from: 'dedipyaman1131@gmail.com',
 //       to: recvr,
 //       subject: 'Sending Email using Node.js',
 //       text: 'hello dada... mail ki gelo???'
 //     };
-    
+
 //     transporter.sendMail(mailOptions, function(error, info){
 //       if (error) {
 //         console.log(error);
@@ -91,9 +105,8 @@ window.location.href ='/signup';
 
 
 
-</script> -->
+	</script>
 
 
 
-<%- include('footer') -%>
-
+	<%- include('footer') -%>
