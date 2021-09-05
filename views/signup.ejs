@@ -37,6 +37,14 @@ function myFunction() {
   let name = $('#name').val();
   console.log(password, confirmPassword)
 
+  if(password === undefined || confirmPassword === undefined || email === undefined || name === undefined) {
+	  alert('Enter all details')
+  } else {
+	  if(password !== confirmPassword) {
+		  alert('')
+	  }
+  }
+
 $.post('/signup', { email: email, confirmPassword: confirmPassword, password: password, Name: name}, (res)=>{
 	 if(!password || !confirmPassword || !email || !name){
 
