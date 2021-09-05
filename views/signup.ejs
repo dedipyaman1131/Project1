@@ -3,15 +3,16 @@
 
 	<form class="row g-3" autocomplete="on">
 		<div class="col-md-6">
+			<label for="inputEmail4" class="form-label">User Name / Email</label>
+			<input name="email" type="email" class="form-control" id="email"
+				required />
+		</div>
+		<div class="col-md-6">
 			<label for="inputState" class="form-label">Name</label>
 
 			<input name="name" type="text" class="form-control" id="name" required />
 		</div>
-		<div class="col-md-6">
-			<label for="inputEmail4" class="form-label">Email</label>
-			<input name="email" type="email" class="form-control" id="email"
-				required />
-		</div>
+		
 		<div class="col-md-6">
 			<label for="inputPassword4" class="form-label">Password</label>
 			<input name="password" type="password" class="form-control" id="password" required>
@@ -43,13 +44,16 @@
 
 			//2. Check if the values are present or not  done
 
-			if (email === undefined || name === undefined || password === undefined || confirmPassword === undefined) {
+			// if (email === undefined || name === undefined || password === undefined || confirmPassword === undefined) {
 
-				//3. if not send alert
+			// 	//3. if not send alert
 
-				cosnole.log('Please fill all details');
-			} else {
+			// 	cosnole.log('Please fill all details');
+			// 	window.location.href = '/signup';
+			// } else {
 				//4. if yes then check if password and confirm password matches or not
+              if(email !== null && name !== undefined &&  password !== undefined && confirmPassword !== undefined  ){
+
 				if (password !== confirmPassword) {
 					//5. if not show error alrt
 					alert("password and confirm password are not matching")
@@ -72,7 +76,10 @@
 					})
 
 				}
-			}
+		}else{
+			alert('Enter all the details');
+			window.location.href = '/signup';
+		}
 
 		}
 

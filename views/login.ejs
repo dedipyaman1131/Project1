@@ -39,13 +39,13 @@
   let password = $('#password').val();
 
 	  $.post('/', { email: email, password: password }, (res)=>{
-          	if(res.code == 1) {
-			window.location.href = '/home';
-		} else  {
-			alert(res.msg)
-            // $.notify(res.msg);
-            window.location.reload();
-		}
+        //   	if(res.code == 1) {
+		// 	window.location.href = '/home';
+		// } else  {
+		// 	alert(res.msg)
+        //     // $.notify(res.msg);
+        //     window.location.reload();
+		// }
 	  })
     
 

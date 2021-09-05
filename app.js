@@ -3,7 +3,26 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken')
 const app = express();
 const mongoose =  require('mongoose');
-var nodemailer = require('nodemailer')
+
+var nodemailer = require('nodemailer');
+// const session = require('express-session');
+// const passport = require('passport');
+// const passportLocalMongoose = require('passport-local-mongoose');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+app.use(bodyParser.urlencoded({ extended: false }))
+const { name } = require("ejs")
+app.set('view engine','ejs');
+app.use(express.static('public'));
+// app.use(express.json())
+// app.use(session({
+//   secret:'this is a secret message',
+//   resave:false,
+//   saveUninitialized:false
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session())
 mongoose.connect("mongodb://localhost:27017/eCommerceDB",{
     useNewUrlParser:true,
     useUnifiedTopology:true,
@@ -14,44 +33,35 @@ mongoose.connect("mongodb://localhost:27017/eCommerceDB",{
     console.log('did not connect')
 });
 
-app.use(bodyParser.urlencoded({ extended: false }))
-const { name } = require("ejs")
-app.set('view engine','ejs');
-app.use(express.static('public'));
-// app.use(express.json())
 const eCommerceSchema = new mongoose.Schema({
   
   email: {
     type: String,
-    required:true,
-    unique : true
-    
-
+    required:'please enter your email',
+    unique:true
+ 
   },
  name: {
     type: String,
-    required:true,
+    required:'enter your name',
     unique:true
    
-  
-  } ,
+ },
   password: {
-    type: String,
-    required:true
-    
-    
-    
-  
-  },
- 
-    
-  
+     type:String,
+     
+     unique:true
+  },  
+
 });
 
-//creating collections
+// eCommerceSchema.plugin(passportLocalMongoose);
+const User = mongoose.model("Regpeople",eCommerceSchema);
 
+// passport.use(User.createStrategy());
 
-const registered = mongoose.model("Regpeople",eCommerceSchema);
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 app.get('/', (req, res) => {
     res.render('login', {bodyPara: 'how are you'});
@@ -61,35 +71,52 @@ app.get('/', (req, res) => {
     res.render("signup")
   })
 app.get("/home",(req,res)=>{
-  res.render("home")
+  // if(req.isAuthenticated()){
+    res.render('home')
+// }else{
+//     res.redirect('/signup')
+// }
 })
 
 
   app.post("/signup", async(req,res)=>{
     try{
 
-
-      
      const  password =  req.body.password
      const email =  req.body.email;
      const name = req.body.name;
      
      console.log(email)
 
+      bcrypt.hash(password,saltRounds,(err,hash)=>{
+        const registerPeople = new User ({ 
+          email: email,
+          name : name,
+          password : hash
+        });
+     
+     registerPeople.save();
+     
+        res.send({ msg: "ok" , code:1}) 
+      })
 
+  }
 
-     const registerPeople = new registered ({ 
-      email: email,
-      name : name,
-      password : password
-    });
- 
- registerPeople.save();
- 
-    res.send({ msg: "ok" , code:1})
-    
-}
-
+// User.register({username:email,name:name},req.body.password,(err,user)=>{
+//   if(err){
+//       console.log(err);
+//       res.send({
+//         msg:'not ok',code:0
+//       })
+//   }else{
+//       passport.authenticate('local')(req,res,()=>{
+//           // res.redirect('/secrets')
+         
+//             res.redirect('/home')
+        
+//       })
+//   }
+// })
 
 
 catch(err){
@@ -103,35 +130,51 @@ catch(err){
 
    app.post("/", async(req,res)=>{
 
-    try{
-     const email = req.body.email;
-     const password = req.body.password;
-     console.log(email,password);
+    // // try{
+    //  const email = req.body.email;
+    //  const password = req.body.password;
+    //  console.log(email,password);
       
-    //  const userEmail = await registered.findOne({Email:email});
-     const user = await registered.findOne({Email:email})
+    // // //  const userEmail = await registered.findOne({Email:email});
+    // //  const user = await registered.findOne({Email:email})
 
-     if(user == null) {
-       res.send({ msg: 'Email/Password does not exist', code: 0})
-     } else {
-      let bPassword = user.Password;
-      let bEmail = user.Email;
-      console.log(bPassword);
-      console.log(bEmail)
+    // //  if(user == null) {
+    // //    res.send({ msg: 'Email/Password does not exist', code: 0})
+    // //  } else {
+    // //   let bPassword = user.Password;
+    // //   let bEmail = user.Email;
+    // //   console.log(bPassword);
+    // //   console.log(bEmail)
 
-      if( bPassword === password){
-      res.send({code:1}) ;
+    // //   if( bPassword === password){
+    // //   res.send({code:1}) ;
        
-      } else{
+    // //   } else{
        
-          res.send({ msg: "Please check ur email/password" , code: 0});
-       }
+    // //       res.send({ msg: "Please check ur email/password" , code: 0});
+    // //    }
 
-     }
+    // //  }
 
-    }catch(err){
-      console.log("Error occurred", err);
-    }
+    // // }catch(err){
+    // //   console.log("Error occurred", err);
+    // // }
+
+//     const user = new User ({
+//       username: email,
+//       password:password
+//   })
+//   req.login(user,(err)=>{
+//    if(err){
+//        console.log(err)
+//        res.render('login')
+//    }else{
+//     passport.authenticate('local')(req,res,()=>{
+//     res.redirect('/secrets')
+//     })
+// }
+  
+//   })
 
 
    });
