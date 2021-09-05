@@ -41,17 +41,9 @@ function myFunction() {
 	  alert('Enter all details')
   } else {
 	  if(password !== confirmPassword) {
-		  alert('')
-	  }
-  }
-
-$.post('/signup', { email: email, confirmPassword: confirmPassword, password: password, Name: name}, (res)=>{
-	 if(!password || !confirmPassword || !email || !name){
-
-		
-		alert("invalid details")
-window.location.href ='/signup';
-     }
+		  alert('password does not match')
+	  } else {
+		$.post('/signup', { email: email, password: password, name: name}, (res)=>{
 
 		if(res.code === 0){
 			alert("invalid details")
@@ -67,6 +59,10 @@ window.location.href ='/signup';
 	
 	
   })
+	  }
+  }
+
+
 	  
    }
 
