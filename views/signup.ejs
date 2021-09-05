@@ -1,3 +1,4 @@
+
 <%- include('header') -%>
 
 
@@ -31,59 +32,44 @@
 
 	<script>
 
-		function myFunction() {
+		
+function myFunction() {
+  let password = $('#password').val();
+  let confirmPassword = $('#confirmPassword').val();
+  let email = $('#email').val();
+  let name = $('#name').val();
+  console.log(password, confirmPassword)
 
-			//1.  get the email , password , name and confirmpassword from the user --> done
+  if(password === undefined || confirmPassword === undefined || email === undefined || name === undefined) {
+	  alert('Enter all details')
+  } else {
+	  if(password !== confirmPassword) {
+		  alert('password does not match')
+	  } else {
+		$.post('/signup', { email: email, password: password, name: name}, (res)=>{
 
-			let password = $('#password').val();
-			let confirmPassword = $('#confirmPassword').val();
-			let email = $('#email').val();
-			let name = $('#name').val()
-
-			console.log(password, confirmPassword, name, email)
-
-			//2. Check if the values are present or not  done
-
-			// if (email === undefined || name === undefined || password === undefined || confirmPassword === undefined) {
-
-			// 	//3. if not send alert
-
-			// 	cosnole.log('Please fill all details');
-			// 	window.location.href = '/signup';
-			// } else {
-				//4. if yes then check if password and confirm password matches or not
-              if(email !== null && name !== undefined &&  password !== undefined && confirmPassword !== undefined  ){
-
-				if (password !== confirmPassword) {
-					//5. if not show error alrt
-					alert("password and confirm password are not matching")
-
-					window.location.href = '/signup';
-				} else {
-
-					console.log('All is correct');
-					//6. if yes then send ajax request to the backend
-					$.post('/signup', { email: email, password: password, name: name }, (res) => {
-
-						if (res.code === 0) {
-							alert("invalid details")
-							window.location.href = '/signup';
-						}
-						else {
-							alert("welcome")
-							window.location.href = '/home'
-						}
-					})
-
-				}
-		}else{
-			alert('Enter all the details');
-			window.location.href = '/signup';
+		if(res.code === 0){
+			alert("invalid details")
+window.location.href ='/signup';
 		}
+ 
+	else{
 
-		}
+		alert("welcome")
+	window.location.href = '/home'
+ 
+}
+	
+	
+  })
+	  }
+  }
 
 
+	  
+   }
+
+	
 
 
 // var transporter = nodemailer.createTransport({
@@ -93,14 +79,14 @@
 //         pass: '8230892637'
 //       }
 //     });
-
+   
 //     var mailOptions = {
 //       from: 'dedipyaman1131@gmail.com',
 //       to: recvr,
 //       subject: 'Sending Email using Node.js',
 //       text: 'hello dada... mail ki gelo???'
 //     };
-
+    
 //     transporter.sendMail(mailOptions, function(error, info){
 //       if (error) {
 //         console.log(error);
@@ -112,8 +98,9 @@
 
 
 
-	</script>
+</script> -->
 
 
 
-	<%- include('footer') -%>
+<%- include('footer') -%>
+
