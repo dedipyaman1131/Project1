@@ -101,7 +101,7 @@ app.get("/home",(req,res)=>{
           res.send({ msg: "Email already exists" , code:0}) 
         } 
 
-        res.send({ msg: "Please enter all the values" , code:0}) 
+        res.send({ msg: "Please enter all the" , code:0}) 
 
          
        } else {
