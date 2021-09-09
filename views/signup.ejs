@@ -2,7 +2,7 @@
 <%- include('header') -%>
 
 
-	<form class="row g-3" autocomplete="on">
+	<form id="signupForm" class="row g-3" autocomplete="on">
 		<!--Mu Changes-->
 		<div class="col-md-6">
 			<label for="inputEmail4" class="form-label">User Name / Email</label>
@@ -27,15 +27,17 @@
 		</div>
 
 		<div class="col-12">
-			<button onclick="myFunction()" class="btn btn-primary">Sign up</button>
+			<button type="submit" class="btn btn-primary">Sign up</button>
 		</div>
 	</form>
 
 	<script>
 
-		
-function myFunction() {
-  let password = $('#password').val();
+
+$('#signupForm').submit( (e) => {
+	e.preventDefault();
+
+	let password = $('#password').val();
   let confirmPassword = $('#confirmPassword').val();
   let email = $('#email').val();
   let name = $('#name').val();
@@ -44,18 +46,18 @@ function myFunction() {
   if(password == '' || confirmPassword == ''|| email == '' || name == '') {
 	  alert('Enter all details')
   } else {
-	  
+
 	  if(password !== confirmPassword) {
 		  alert('password does not match')
 	  } else {
 		$.post('/signup', { email: email, password: password, name: name}, (res)=>{
 
-		if(res.code === 0){
+			console.log(res.code);
+
+		if(res.code == 0){
 			alert("invalid details")
 window.location.href ='/signup';
-		}
- 
-	else{
+		} else {
 
 		alert("welcome")
 	window.location.href = '/home'
@@ -67,9 +69,8 @@ window.location.href ='/signup';
 	  }
   }
 
+})
 
-	  
-   }
 
 	
 
