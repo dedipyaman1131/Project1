@@ -39,11 +39,12 @@ function myFunction() {
   let confirmPassword = $('#confirmPassword').val();
   let email = $('#email').val();
   let name = $('#name').val();
-  console.log(password, confirmPassword)
+  console.log(password, confirmPassword, email, name)
 
-  if(password === undefined || confirmPassword === undefined || email === undefined || name === undefined) {
+  if(password == '' || confirmPassword == ''|| email == '' || name == '') {
 	  alert('Enter all details')
   } else {
+	  
 	  if(password !== confirmPassword) {
 		  alert('password does not match')
 	  } else {

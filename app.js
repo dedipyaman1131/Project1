@@ -44,13 +44,10 @@ const eCommerceSchema = new mongoose.Schema({
  name: {
     type: String,
     required:'enter your name',
-    unique:true
-   
  },
   password: {
      type:String,
-     
-     unique:true
+     required:true
   },  
 
 });
@@ -95,9 +92,26 @@ app.get("/home",(req,res)=>{
           password : hash
         });
      
-     registerPeople.save();
+     registerPeople.save((err, done) => {
+       if(err) {
+        console.log('Error occurred', err);
+
+        if(err.code == 11000) {
+
+          res.send({ msg: "Email already exists" , code:0}) 
+        } 
+
+        res.send({ msg: "Please enter all the values" , code:0}) 
+
+         
+       } else {
+         console.log('User saved successfully');
+
+         res.send({ msg: "ok" , code:1}) 
+       }
+     });
      
-        res.send({ msg: "ok" , code:1}) 
+        // res.send({ msg: "ok" , code:1}) 
       })
 
   }
